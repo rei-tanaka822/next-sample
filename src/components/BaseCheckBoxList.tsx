@@ -38,17 +38,17 @@ export const BaseCheckBoxList = (props: Props) => {
 
     return (
         <div className={className}>
-        <p>{itemName}</p>
-        <ul>
-            {optionList.map((option, index) => {
-                return (
-                    <li key={index}>
-                    <input type="checkbox" value={option.id} onChange={handleFunc}></input>
-                    <label>{option.value}</label>
-                    </li>
-                )
-            })}
-        </ul>
-    </div>
+            <p>{itemName}</p>
+            <ul>
+                {optionList.map((option, index) => {
+                    return (
+                        <li key={index}>
+                        <input type="checkbox" value={option.id} onChange={handleFunc}></input>
+                        <label>{option.value}</label>
+                        </li>
+                    )
+                })}
+            </ul>
+        </div>
     );
 }

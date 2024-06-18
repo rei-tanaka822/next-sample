@@ -147,58 +147,58 @@ const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
 	}
 
 	return (
-	<div>
-		<Header />
-		<title>問合せ一覧</title>
-		<main>
-			<div className="contents">
-				<div className="sidebar">
-					<button>+ 新規問合せ</button>
-					<div className="filterBox">
-						<StatusCheckList handleFunc={handleCheckboxChange} />
-						{/* [TODO]handleFuncがバケツリレーになっている */}
-						<LeadGroupSelect itemName="問合せ種別" handleFunc={handleSelectedGroupChange} />
-						<UserSelect itemName="担当者" handleFunc={handleSelectedPersonInChargeChange} />
-						<button onClick={handleFilterButtonClick}>絞り込み</button>
-					</div>
-				</div>
-				<div>
-					<div className="flex justify-between">
-						<h1>問合せ一覧</h1>
-						<div className="searchBox">
-							<input className="searchLead" type="text" placeholder="問合せ番号または件名（部分一致）" value={searchWordLead} onChange={searchWordLeadChange}></input>
-							<input className="searchClient" type="text" placeholder="顧客名（部分一致）" value={searchWordClient} onChange={searchWordClientChange}></input>
-							<button className="searchButton" onClick={handleSearchButtonClick}>検索</button>
+		<div>
+			<Header />
+			<title>問合せ一覧</title>
+			<main>
+				<div className="contents">
+					<div className="sidebar">
+						<button>+ 新規問合せ</button>
+						<div className="filterBox">
+							<StatusCheckList handleFunc={handleCheckboxChange} />
+							{/* [TODO]handleFuncがバケツリレーになっている */}
+							<LeadGroupSelect itemName="問合せ種別" handleFunc={handleSelectedGroupChange} />
+							<UserSelect itemName="担当者" handleFunc={handleSelectedPersonInChargeChange} />
+							<button onClick={handleFilterButtonClick}>絞り込み</button>
 						</div>
 					</div>
-					<div className="searchList">
-						<table>
-							<thead>
-								<tr>
-									<th>問合せ番号</th>
-									<th className="leadName">件名</th>
-									<th className="clientName">顧客名</th>
-									<th>ステータス</th>
-									<th className="personInCharge">担当者</th>
-								</tr>
-								{leadInfoList.map((leadInfo, index) => {
-									return (
-									<tr key={index}>
-										<td>{leadInfo.lead_number}</td>
-										<td>{leadInfo.lead_name}</td>
-										<td>{leadInfo.client_name}</td>
-										<td>{leadInfo.lead_status}</td>
-										<td>{leadInfo.person_in_charge}</td>
+					<div>
+						<div className="flex justify-between">
+							<h1>問合せ一覧</h1>
+							<div className="searchBox">
+								<input className="searchLead" type="text" placeholder="問合せ番号または件名（部分一致）" value={searchWordLead} onChange={searchWordLeadChange}></input>
+								<input className="searchClient" type="text" placeholder="顧客名（部分一致）" value={searchWordClient} onChange={searchWordClientChange}></input>
+								<button className="searchButton" onClick={handleSearchButtonClick}>検索</button>
+							</div>
+						</div>
+						<div className="searchList">
+							<table>
+								<thead>
+									<tr>
+										<th>問合せ番号</th>
+										<th className="leadName">件名</th>
+										<th className="clientName">顧客名</th>
+										<th>ステータス</th>
+										<th className="personInCharge">担当者</th>
 									</tr>
-									)
-								})}
-							</thead>
-						</table>
+									{leadInfoList.map((leadInfo, index) => {
+										return (
+										<tr key={index}>
+											<td>{leadInfo.lead_number}</td>
+											<td>{leadInfo.lead_name}</td>
+											<td>{leadInfo.client_name}</td>
+											<td>{leadInfo.lead_status}</td>
+											<td>{leadInfo.person_in_charge}</td>
+										</tr>
+										)
+									})}
+								</thead>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
-		</main>
-	</div>
+			</main>
+		</div>
 	)
 }
 
@@ -207,18 +207,18 @@ export const getServerSideProps: GetServerSideProps<LeadProps> = async () => {
 
 	let leadInfoList: LeadInfo[] = [];
 	try {
-	// [メモ]awaitで、Promiseがresolveするのを待つ
-	const res = await fetch(`${process.env.BASE_URL}/api/leadList`);
-	leadInfoList = await res.json();
+		// [メモ]awaitで、Promiseがresolveするのを待つ
+		const res = await fetch(`${process.env.BASE_URL}/api/leadList`);
+		leadInfoList = await res.json();
 	} catch (error) {
-	console.error('Failed to fetch data', error);
+		console.error('Failed to fetch data', error);
 	}
 
 	// [メモ]awaitにより、必ずデータ取得後に実行される
 	return {
-	props: {
-		initialLeadInfoList: leadInfoList
-	}
+		props: {
+			initialLeadInfoList: leadInfoList
+		}
 	};
 }
 
