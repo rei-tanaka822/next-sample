@@ -1,5 +1,5 @@
 import React from 'react';
-import { LeadGroupSelect } from "@/components/LeadGroupSelect";
+import { GroupSelect } from "@/components/GroupSelect";
 import { UserSelect } from "@/components/UserSelect";
 import { StatusCheckList } from "@/components/StatusCheckList";
 import { Header } from "@/components/Header";
@@ -9,50 +9,50 @@ import { useEffect, useState } from 'react';
 /**
  * 問合せ情報の型
  *
- * @property {string} lead_number 問合せ番号
- * @property {string} lead_name 件名
+ * @property {string} number 問合せ番号
+ * @property {string} subject 件名
  * @property {string} client_name 顧客名
- * @property {string} lead_status ステータス
+ * @property {string} status ステータス
  * @property {string} person_in_charge 担当者
  */
-export type LeadInfo = {
+export type ContractInfo = {
 	// [TODO]jsonに合わせた命名になっている
-	lead_number: string;
-	lead_name: string;
+	number: string;
+	subject: string;
 	client_name: string;
-	lead_status: string;
+	status: string;
 	person_in_charge: string;
 }
 
 /**
  * Propsの型
  *
- * @property {LeadInfo[]} initialLeadInfoList 問合せ一覧（初期表示）
+ * @property {ContractInfo[]} initialContractInfoList 問合せ一覧（初期表示）
  */
-type LeadProps = {
-	initialLeadInfoList: LeadInfo[];
+type ContractProps = {
+	initialContractInfoList: ContractInfo[];
 }
 
 /**
  * 検索条件の型
  *
- * @property {string} lead 問合せ番号 or 件名
+ * @property {string} contract 問合せ番号 or 件名
  * @property {string} client 顧客名
  */
 type SearchWords = {
-	lead: string;
+	contract: string;
 	client: string;
 }
 
 /**
  * 絞り込み条件の型
  *
- * @property {string[]} leadStatuses ステータス一覧
+ * @property {string[]} statuses ステータス一覧
  * @property {string} group 問合せ種別
  * @property {string} personInCharge 担当者
  */
 type FilterItems = {
-	leadStatuses: string[];
+	statuses: string[];
 	group: string;
 	personInCharge: string;
 }
@@ -60,33 +60,35 @@ type FilterItems = {
 /**
  * 一覧ページ表示用コンポーネント
  *
- * @param {LeadProps} props 案件情報
+ * @param {ContractProps} props 案件情報
  * @returns {JSX.Element}
  */
-const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
+const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 	// 検索ワード状態管理用フック
-	const [searchWordLead, setSearchWordLead] = useState('');
+	const [searchWordContact, setSearchWordContact] = useState('');
 	const [searchWordClient, setSearchWordClient] = useState('');
 
-	// 案件名or案件番号が入力されたら値を更新
-	const searchWordLeadChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchWordLead(e.target.value);
+	// 件名or問合せ番号が入力されたら値を更新
+	// [TODO]テキストボックスの値が変わった時のみ実行する
+	const searchWordContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchWordContact(e.target.value);
 	}
 	// 顧客名が入力されたら値を更新
+	// [TODO]テキストボックスの値が変わった時のみ実行する
 	const searchWordClientChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchWordClient(e.target.value);
 	}
 
 	// 検索ボタン押下時の処理
 	const handleSearchButtonClick = () => {
-		search({ lead: searchWordLead, client: searchWordClient});
+		search({ contract: searchWordContact, client: searchWordClient});
 	}
 
 	// 検索結果状態管理用フック
-	const [leadInfoList, setLeadInfoList] = useState<LeadInfo[]>(props.initialLeadInfoList);
+	const [contractInfoList, setContractInfoList] = useState<ContractInfo[]>(props.initialContractInfoList);
 	// 初期表示時の設定処理
 	useEffect(() => {
-		setLeadInfoList(props.initialLeadInfoList);
+		setContractInfoList(props.initialContractInfoList);
 	}, []);
 
 	// 初期表示後の検索処理
@@ -95,7 +97,7 @@ const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
 		const res = await fetch(`api/search?${params}`);
 		const data = await (res.json());
 		// 検索結果を更新
-		setLeadInfoList(data);
+		setContractInfoList(data);
 	}
 
 	// フィルター状態管理用フック
@@ -127,14 +129,14 @@ const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
 
 	// 絞り込みボタン押下時の処理
 	const handleFilterButtonClick = () => {
-		filter({ leadStatuses: checkedStatuses, group: selectedGroup, personInCharge: selectedPersonInCharge});
+		filter({ statuses: checkedStatuses, group: selectedGroup, personInCharge: selectedPersonInCharge});
 	}
 
 	// 初期表示後のフィルター処理
 	const filter = async (filterItems: FilterItems) => {
 		const params = new URLSearchParams();
 		// クエリパラメータの手動設定　※ステータス（配列）が配列のため、そのままだと渡せない
-		filterItems.leadStatuses.forEach(status => params.append('leadStatuses', status));
+		filterItems.statuses.forEach(status => params.append('statuses', status));
 		if (filterItems.group) {
 			params.append('group', filterItems.group);
 		}
@@ -143,7 +145,7 @@ const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
 		}
 		const res = await fetch(`api/filter?${params}`);
 		const data = await (res.json());
-		setLeadInfoList(data);
+		setContractInfoList(data);
 	}
 
 	return (
@@ -157,7 +159,7 @@ const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
 						<div className="filterBox">
 							<StatusCheckList handleFunc={handleCheckboxChange} />
 							{/* [TODO]handleFuncがバケツリレーになっている */}
-							<LeadGroupSelect itemName="問合せ種別" handleFunc={handleSelectedGroupChange} />
+							<GroupSelect itemName="問合せ種別" handleFunc={handleSelectedGroupChange} />
 							<UserSelect itemName="担当者" handleFunc={handleSelectedPersonInChargeChange} />
 							<button onClick={handleFilterButtonClick}>絞り込み</button>
 						</div>
@@ -166,7 +168,7 @@ const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
 						<div className="flex justify-between">
 							<h1>問合せ一覧</h1>
 							<div className="searchBox">
-								<input className="searchLead" type="text" placeholder="問合せ番号または件名（部分一致）" value={searchWordLead} onChange={searchWordLeadChange}></input>
+								<input className="searchContract" type="text" placeholder="問合せ番号または件名（部分一致）" value={searchWordContact} onChange={searchWordContactChange}></input>
 								<input className="searchClient" type="text" placeholder="顧客名（部分一致）" value={searchWordClient} onChange={searchWordClientChange}></input>
 								<button className="searchButton" onClick={handleSearchButtonClick}>検索</button>
 							</div>
@@ -176,19 +178,19 @@ const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
 								<thead>
 									<tr>
 										<th>問合せ番号</th>
-										<th className="leadName">件名</th>
+										<th className="subject">件名</th>
 										<th className="clientName">顧客名</th>
 										<th>ステータス</th>
 										<th className="personInCharge">担当者</th>
 									</tr>
-									{leadInfoList.map((leadInfo, index) => {
+									{contractInfoList.map((contractInfo, index) => {
 										return (
 										<tr key={index}>
-											<td>{leadInfo.lead_number}</td>
-											<td>{leadInfo.lead_name}</td>
-											<td>{leadInfo.client_name}</td>
-											<td>{leadInfo.lead_status}</td>
-											<td>{leadInfo.person_in_charge}</td>
+											<td>{contractInfo.number}</td>
+											<td>{contractInfo.subject}</td>
+											<td>{contractInfo.client_name}</td>
+											<td>{contractInfo.status}</td>
+											<td>{contractInfo.person_in_charge}</td>
 										</tr>
 										)
 									})}
@@ -203,13 +205,13 @@ const HomePage: NextPage<LeadProps> = (props: LeadProps) => {
 }
 
 // [メモ]asyncで、Promiseオブジェクトを返す関数にする
-export const getServerSideProps: GetServerSideProps<LeadProps> = async () => {
+export const getServerSideProps: GetServerSideProps<ContractProps> = async () => {
 
-	let leadInfoList: LeadInfo[] = [];
+	let contractInfoList: ContractInfo[] = [];
 	try {
 		// [メモ]awaitで、Promiseがresolveするのを待つ
-		const res = await fetch(`${process.env.BASE_URL}/api/leadList`);
-		leadInfoList = await res.json();
+		const res = await fetch(`${process.env.BASE_URL}/api/contractList`);
+		contractInfoList = await res.json();
 	} catch (error) {
 		console.error('Failed to fetch data', error);
 	}
@@ -217,10 +219,10 @@ export const getServerSideProps: GetServerSideProps<LeadProps> = async () => {
 	// [メモ]awaitにより、必ずデータ取得後に実行される
 	return {
 		props: {
-			initialLeadInfoList: leadInfoList
+			initialContractInfoList: contractInfoList
 		}
 	};
 }
 
-export default HomePage;
+export default ContactPage;
 

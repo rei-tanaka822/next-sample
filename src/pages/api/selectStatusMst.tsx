@@ -4,10 +4,10 @@ import { query } from '../../lib/db';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         let sql =
-        ' SELECT'
-       +'   id,'
-       +'   status_name AS value'
-       +' FROM lead_status_mst';
+             ' SELECT'
+            +'   id,'
+            +'   status_name AS value'
+            +' FROM status_mst';
 
         const result = await query(sql);
         res.status(200).json(result.rows);

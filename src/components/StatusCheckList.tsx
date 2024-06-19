@@ -47,6 +47,6 @@ export const StatusCheckList = (props: Props) => {
     }, []);
 
     return (
-        <BaseCheckBoxList className="lead_status" itemName="ステータス" optionList={statusMst} handleFunc={handleFunc} />
+        <BaseCheckBoxList className="status" itemName="ステータス" optionList={statusMst} handleFunc={handleFunc} />
     );
 }

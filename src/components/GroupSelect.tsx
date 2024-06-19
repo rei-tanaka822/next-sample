@@ -30,14 +30,14 @@ type GroupMst = {
  * @param {Props} props セレクトボックスの情報
  * @returns {JSX.Element}
  */
-export const LeadGroupSelect = (props: Props) => {
+export const GroupSelect = (props: Props) => {
     const { itemName, handleFunc } = props;
     // 問合せ種別一覧管理用
     const [groupMst, setGroupMst] = useState<GroupMst[]>([]);
 
     // 問合せ種別一覧をマスタから取得
     const selectGroupMst = async () => {
-		const res = await fetch('api/selectLeadGroupMst');
+		const res = await fetch('api/selectGroupMst');
 		const data = await (res.json());
 		// 取得結果を更新
 		setGroupMst(data);

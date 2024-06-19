@@ -2,29 +2,29 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { query } from '../../lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { lead, client } = req.query;
+    const { contract, client } = req.query;
 
     try {
         let sql =
-        ' SELECT'
-       +'   lead_number,'
-       +'   lead_name,'
-       +'   client_name,'
-       +'   status_name AS lead_status,'
-       +'   user_name AS person_in_charge'
-       +' FROM lead l'
-       +' LEFT JOIN lead_status_mst lsm'
-       +'   ON l.lead_status = lsm.id'
-       +' LEFT JOIN user_mst um'
-       +'   ON l.person_in_charge = um.id'
-       +' WHERE 1=1';
+             ' SELECT'
+            +'   number,'
+            +'   subject,'
+            +'   client_name,'
+            +'   status_name AS status,'
+            +'   user_name AS person_in_charge'
+            +' FROM contract c'
+            +' LEFT JOIN status_mst sm'
+            +'   ON c.status = sm.id'
+            +' LEFT JOIN user_mst um'
+            +'   ON c.person_in_charge = um.id'
+            +' WHERE 1=1';
 
        const params: string[] = [];
 
-        // 案件番号 or 案件名指定時
-        if (lead && lead !== '') {
-            params.push(`%${lead}%`);
-            sql += ` AND (lead_number LIKE $${params.length} OR lead_name LIKE $${params.length})`;
+        // 問合せ番号 or 件名指定時
+        if (contract && contract !== '') {
+            params.push(`%${contract}%`);
+            sql += ` AND (number LIKE $${params.length} OR subject LIKE $${params.length})`;
         }
         // 顧客名指定時
         if (client && client !== '') {

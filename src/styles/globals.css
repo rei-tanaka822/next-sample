@@ -65,7 +65,7 @@ td {
   border-bottom: 1px solid gray;
 }
 
-.leadName {
+.subject {
   width: 500px;
 }
 
@@ -110,7 +110,7 @@ td {
   margin-top: 30px;
 }
 
-.lead_status {
+.status {
   display: flex;
   flex-direction: column;
 }
@@ -120,7 +120,7 @@ td {
   gap: 15px;
 }
 
-.searchLead {
+.searchContract {
   width: 240px;
   height: 38px;
 }
@@ -135,7 +135,7 @@ td {
   height: 38px;
 }
 
-/* .searchLead,
+/* .searchContract,
 .searchClient {
   display: inline-block;
 } */
