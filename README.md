@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Next.js（React）勉強用のサンプル画面です。
 
 ## 言語
 
@@ -16,7 +16,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 * Docker
 
-## アプリ仕様
+## 画面仕様
 
 * 顧客から受け付けた問い合わせの一覧表示を行う
 * 案件名,顧客名（入力式）での検索が可能
@@ -25,3 +25,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 * 以下は追加予定の機能
 　　 * ページネーション
 　　 * お気に入り登録
+
+## 画面仕様
+
+![問合せ一覧_画面イメージ](https://github.com/rei-tanaka822/next-sample/assets/149063727/ee1f218a-fa18-4171-aeae-873443f0f286)
