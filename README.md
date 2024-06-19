@@ -23,5 +23,5 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 * ステータス,種別,担当者（選択式）での絞り込みが可能
 
 * 以下は追加予定の機能
-　　 - ページネーション
-　　 - お気に入り登録
+　　 * ページネーション
+　　 * お気に入り登録
