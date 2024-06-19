@@ -23,7 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             +'   ON c.person_in_charge = um.id'
             +' WHERE 1=1';
 
-        // [TODO]anyにするしかない？
         const params: any[] = [];
 
         // 案件ステータス指定時

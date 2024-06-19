@@ -1,4 +1,5 @@
 import React from 'react';
+import { OptionInfo } from '@/types/option';
 
 /**
  * Propsの型
@@ -13,18 +14,6 @@ type Props = {
     itemName: string;
     optionList: OptionInfo[];
     handleFunc: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-/**
- * [TODO]共通化する
- * 選択肢の型
- *
- * @property {string} id ステータスID
- * @property {string} value ステータス名
- */
-type OptionInfo = {
-    id: number;
-    value: string;
 }
 
 /**

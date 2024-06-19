@@ -1,4 +1,5 @@
 import React from 'react';
+import { OptionInfo } from '@/types/option';
 
 /**
  * セレクトボックスの情報の型
@@ -11,17 +12,6 @@ type Props = {
     className?: string;
     optionList: OptionInfo[];
     handleFunc: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
-
-/**
- * 選択肢の型
- *
- * @property {number} id ID
- * @property {string} value 名称
- */
-type OptionInfo = {
-    id: number;
-    value: string;
 }
 
 /**
