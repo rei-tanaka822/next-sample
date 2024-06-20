@@ -7,7 +7,7 @@
 export type Option = {
     id: number;
     value: string;
-}
+};
 
 /**
  * Propsの型（選択項目用）
@@ -18,4 +18,4 @@ export type Option = {
 export type OptionProps = {
     itemName: string;
     handleFunc: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
+};

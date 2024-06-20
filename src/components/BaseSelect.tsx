@@ -12,7 +12,7 @@ type Props = {
     className?: string;
     optionList: Option[];
     handleFunc: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
+};
 
 /**
  * セレクトボックス表示用コンポーネント
@@ -21,14 +21,16 @@ type Props = {
  * @returns {JSX.Element}
  */
 export const BaseSelect = (props: Props) => {
-    const { className, optionList, handleFunc } = props;
+const { className, optionList, handleFunc } = props;
 
-    return (
-        <select className={className} onChange={handleFunc}>
-            <option value=""></option>
-            {optionList.map((option, index) => (
-                <option key={index} value={option.id}>{option.value}</option>
-            ))}
-        </select>
-    );
+return (
+    <select className={className} onChange={handleFunc}>
+        <option value=""></option>
+        {optionList.map((option, index) => (
+            <option key={index} value={option.id}>
+                {option.value}
+            </option>
+        ))}
+    </select>
+);
 }

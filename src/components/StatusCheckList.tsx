@@ -11,7 +11,7 @@ import { Option } from '@/types/option';
  */
 type Props = {
     handleFunc: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+};
 
 /**
  * ステータスチェックボックス一覧表示用コンポーネント
@@ -26,17 +26,22 @@ export const StatusCheckList = (props: Props) => {
 
     // ステータス一覧をマスタから取得
     const selectStatusMst = async () => {
-		const res = await fetch('api/selectStatusMst');
-		const data = await (res.json());
-		// 取得結果を更新
-		setStatusMst(data);
-	}
+        const res = await fetch('api/selectStatusMst');
+        const data = await res.json();
+        // 取得結果を更新
+        setStatusMst(data);
+    };
 
     useEffect(() => {
         selectStatusMst();
     }, []);
 
     return (
-        <BaseCheckBoxList className="status" itemName="ステータス" optionList={statusMst} handleFunc={handleFunc} />
+        <BaseCheckBoxList
+            className="status"
+            itemName="ステータス"
+            optionList={statusMst}
+            handleFunc={handleFunc}
+        />
     );
-}
+};

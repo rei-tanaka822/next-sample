@@ -16,11 +16,11 @@ export const GroupSelect = (props: OptionProps) => {
 
     // 問合せ種別一覧をマスタから取得
     const selectGroupMst = async () => {
-		const res = await fetch('api/selectGroupMst');
-		const data = await (res.json());
-		// 取得結果を更新
-		setGroupMst(data);
-	}
+        const res = await fetch('api/selectGroupMst');
+        const data = await res.json();
+        // 取得結果を更新
+        setGroupMst(data);
+    };
 
     useEffect(() => {
         selectGroupMst();
@@ -28,8 +28,12 @@ export const GroupSelect = (props: OptionProps) => {
 
     return (
         <div>
-        <p>{itemName}</p>
-            <BaseSelect className="filter" optionList={groupMst} handleFunc={handleFunc} />
+            <p>{itemName}</p>
+            <BaseSelect
+                className="filter"
+                optionList={groupMst}
+                handleFunc={handleFunc}
+            />
         </div>
     );
 }

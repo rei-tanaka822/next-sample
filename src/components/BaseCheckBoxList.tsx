@@ -14,7 +14,7 @@ type Props = {
     itemName: string;
     optionList: Option[];
     handleFunc: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+};
 
 /**
  * チェックボックス一覧表示用コンポーネント
@@ -31,11 +31,15 @@ export const BaseCheckBoxList = (props: Props) => {
             <ul>
                 {optionList.map((option, index) => (
                     <li key={index}>
-                    <input type="checkbox" value={option.id} onChange={handleFunc}></input>
-                    <label>{option.value}</label>
+                        <input
+                            type="checkbox"
+                            value={option.id}
+                            onChange={handleFunc}
+                        ></input>
+                        <label>{option.value}</label>
                     </li>
                 ))}
             </ul>
         </div>
     );
-}
+};

@@ -16,11 +16,11 @@ export const UserSelect = (props: OptionProps) => {
 
     // ユーザー一覧をマスタから取得
     const selectUserMst = async () => {
-		const res = await fetch('api/selectUserMst');
-		const data = await (res.json());
-		// 取得結果を更新
-		setUserMst(data);
-	}
+        const res = await fetch('api/selectUserMst');
+        const data = await res.json();
+        // 取得結果を更新
+        setUserMst(data);
+    };
 
     useEffect(() => {
         selectUserMst();
@@ -28,8 +28,12 @@ export const UserSelect = (props: OptionProps) => {
 
     return (
         <div>
-        <p>{itemName}</p>
-            <BaseSelect className="filter" optionList={userMst} handleFunc={handleFunc} />
+            <p>{itemName}</p>
+            <BaseSelect
+                className="filter"
+                optionList={userMst}
+                handleFunc={handleFunc}
+            />
         </div>
     );
-}
+};
