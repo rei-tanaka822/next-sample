@@ -1,18 +1,18 @@
 import React from 'react';
-import { OptionInfo } from '@/types/option';
+import { Option } from '@/types/option';
 
 /**
  * Propsの型
  *
  * @property {string} className class
  * @property {string} itemName 項目名
- * @property {OptionInfo[]} optionList 選択肢
+ * @property {Option[]} optionList 選択肢
  * @property {{(e: React.ChangeEvent<HTMLInputElement>) => void}} handleFunc ハンドラメソッド
  */
 type Props = {
     className?: string;
     itemName: string;
-    optionList: OptionInfo[];
+    optionList: Option[];
     handleFunc: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

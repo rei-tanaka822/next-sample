@@ -1,16 +1,16 @@
 import React from 'react';
-import { OptionInfo } from '@/types/option';
+import { Option } from '@/types/option';
 
 /**
  * セレクトボックスの情報の型
  *
  * @property {string} className class名
- * @property {OptionInfo[]} optionList 選択肢
+ * @property {Option[]} optionList 選択肢
  * @property {{(e: React.ChangeEvent<HTMLSelectElement>) => void}} handleFunc ハンドラメソッド
  */
 type Props = {
     className?: string;
-    optionList: OptionInfo[];
+    optionList: Option[];
     handleFunc: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 

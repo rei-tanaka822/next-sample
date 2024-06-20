@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
  * @property {string} status ステータス
  * @property {string} person_in_charge 担当者
  */
-export type ContactInfo = {
+export type ContactDetail = {
 	// [TODO]jsonに合わせた命名になっている
 	number: string;
 	subject: string;
@@ -27,10 +27,10 @@ export type ContactInfo = {
 /**
  * Propsの型
  *
- * @property {ContactInfo[]} initialContactInfoList 問合せ一覧（初期表示）
+ * @property {ContactDetail[]} initialContactDetailList 問合せ一覧（初期表示）
  */
 type ContactProps = {
-	initialContactInfoList: ContactInfo[];
+	initialContactDetailList: ContactDetail[];
 }
 
 /**
@@ -85,10 +85,10 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 	}
 
 	// 検索結果状態管理用フック
-	const [contactInfoList, setContactInfoList] = useState<ContactInfo[]>(props.initialContactInfoList);
+	const [contactDetailList, setContactDetailList] = useState<ContactDetail[]>(props.initialContactDetailList);
 	// 初期表示時の設定処理
 	useEffect(() => {
-		setContactInfoList(props.initialContactInfoList);
+		setContactDetailList(props.initialContactDetailList);
 	}, []);
 
 	// 初期表示後の検索処理
@@ -97,7 +97,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 		const res = await fetch(`api/search?${params}`);
 		const data = await (res.json());
 		// 検索結果を更新
-		setContactInfoList(data);
+		setContactDetailList(data);
 	}
 
 	// フィルター状態管理用フック
@@ -145,7 +145,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 		}
 		const res = await fetch(`api/filter?${params}`);
 		const data = await (res.json());
-		setContactInfoList(data);
+		setContactDetailList(data);
 	}
 
 	return (
@@ -183,14 +183,14 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 										<th>ステータス</th>
 										<th className="personInCharge">担当者</th>
 									</tr>
-									{contactInfoList.map((contactInfo, index) => {
+									{contactDetailList.map((contactDetail, index) => {
 										return (
 										<tr key={index}>
-											<td>{contactInfo.number}</td>
-											<td>{contactInfo.subject}</td>
-											<td>{contactInfo.client_name}</td>
-											<td>{contactInfo.status}</td>
-											<td>{contactInfo.person_in_charge}</td>
+											<td>{contactDetail.number}</td>
+											<td>{contactDetail.subject}</td>
+											<td>{contactDetail.client_name}</td>
+											<td>{contactDetail.status}</td>
+											<td>{contactDetail.person_in_charge}</td>
 										</tr>
 										)
 									})}
@@ -207,11 +207,11 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 // [メモ]asyncで、Promiseオブジェクトを返す関数にする
 export const getServerSideProps: GetServerSideProps<ContactProps> = async () => {
 
-	let contactInfoList: ContactInfo[] = [];
+	let contactDetailList: ContactDetail[] = [];
 	try {
 		// [メモ]awaitで、Promiseがresolveするのを待つ
 		const res = await fetch(`${process.env.BASE_URL}/api/contactList`);
-		contactInfoList = await res.json();
+		contactDetailList = await res.json();
 	} catch (error) {
 		console.error('Failed to fetch data', error);
 	}
@@ -219,7 +219,7 @@ export const getServerSideProps: GetServerSideProps<ContactProps> = async () => 
 	// [メモ]awaitにより、必ずデータ取得後に実行される
 	return {
 		props: {
-			initialContactInfoList: contactInfoList
+			initialContactDetailList: contactDetailList
 		}
 	};
 }
