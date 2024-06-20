@@ -1,28 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { BaseSelect } from './BaseSelect';
-
-/**
- * Propsの型
- *
- * @property {string} itemName 項目名
- * @property {{(e: React.ChangeEvent<HTMLSelectElement>) => void}} handleFunc ハンドラメソッド
- */
-type Props = {
-    itemName: string;
-    handleFunc: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
-
-/**
- * ユーザーの型
- *
- * @property {string} id ユーザーID
- * @property {string} value ユーザー名
- */
-type UserMst = {
-    id: number;
-    value: string;
-}
+import { Option, OptionProps } from '@/types/option';
 
 /**
  * ユーザーセレクトボックス表示用コンポーネント
@@ -30,10 +9,10 @@ type UserMst = {
  * @param {Props} props セレクトボックスの情報
  * @returns {JSX.Element}
  */
-export const UserSelect = (props: Props) => {
+export const UserSelect = (props: OptionProps) => {
     const { itemName, handleFunc } = props;
     // ユーザー一覧管理用
-    const [userMst, setUserMst] = useState<UserMst[]>([]);
+    const [userMst, setUserMst] = useState<Option[]>([]);
 
     // ユーザー一覧をマスタから取得
     const selectUserMst = async () => {

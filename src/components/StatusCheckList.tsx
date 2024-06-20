@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { BaseCheckBoxList } from './BaseCheckBoxList';
+import { Option } from '@/types/option';
 
 /**
  * Propsの型
@@ -13,17 +14,6 @@ type Props = {
 }
 
 /**
- * ステータスの型
- *
- * @property {string} id ステータスID
- * @property {string} value ステータス名
- */
-type StatusMst = {
-    id: number;
-    value: string;
-}
-
-/**
  * ステータスチェックボックス一覧表示用コンポーネント
  *
  * @param {Props} props セレクトボックスの情報
@@ -32,7 +22,7 @@ type StatusMst = {
 export const StatusCheckList = (props: Props) => {
     const { handleFunc } = props;
     //ステータス一覧管理用
-    const [statusMst, setStatusMst] = useState<StatusMst[]>([]);
+    const [statusMst, setStatusMst] = useState<Option[]>([]);
 
     // ステータス一覧をマスタから取得
     const selectStatusMst = async () => {
