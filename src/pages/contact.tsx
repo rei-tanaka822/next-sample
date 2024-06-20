@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
  * @property {string} status ステータス
  * @property {string} person_in_charge 担当者
  */
-export type ContractInfo = {
+export type ContactInfo = {
 	// [TODO]jsonに合わせた命名になっている
 	number: string;
 	subject: string;
@@ -27,10 +27,10 @@ export type ContractInfo = {
 /**
  * Propsの型
  *
- * @property {ContractInfo[]} initialContractInfoList 問合せ一覧（初期表示）
+ * @property {ContactInfo[]} initialContactInfoList 問合せ一覧（初期表示）
  */
-type ContractProps = {
-	initialContractInfoList: ContractInfo[];
+type ContactProps = {
+	initialContactInfoList: ContactInfo[];
 }
 
 /**
@@ -60,10 +60,10 @@ type FilterItems = {
 /**
  * 一覧ページ表示用コンポーネント
  *
- * @param {ContractProps} props 案件情報
+ * @param {ContactProps} props 案件情報
  * @returns {JSX.Element}
  */
-const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
+const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 	// 検索ワード状態管理用フック
 	const [searchWordContact, setSearchWordContact] = useState('');
 	const [searchWordClient, setSearchWordClient] = useState('');
@@ -85,10 +85,10 @@ const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 	}
 
 	// 検索結果状態管理用フック
-	const [contactInfoList, setContractInfoList] = useState<ContractInfo[]>(props.initialContractInfoList);
+	const [contactInfoList, setContactInfoList] = useState<ContactInfo[]>(props.initialContactInfoList);
 	// 初期表示時の設定処理
 	useEffect(() => {
-		setContractInfoList(props.initialContractInfoList);
+		setContactInfoList(props.initialContactInfoList);
 	}, []);
 
 	// 初期表示後の検索処理
@@ -97,7 +97,7 @@ const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 		const res = await fetch(`api/search?${params}`);
 		const data = await (res.json());
 		// 検索結果を更新
-		setContractInfoList(data);
+		setContactInfoList(data);
 	}
 
 	// フィルター状態管理用フック
@@ -145,7 +145,7 @@ const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 		}
 		const res = await fetch(`api/filter?${params}`);
 		const data = await (res.json());
-		setContractInfoList(data);
+		setContactInfoList(data);
 	}
 
 	return (
@@ -168,7 +168,7 @@ const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 						<div className="flex justify-between">
 							<h1>問合せ一覧</h1>
 							<div className="searchBox">
-								<input className="searchContract" type="text" placeholder="問合せ番号または件名（部分一致）" value={searchWordContact} onChange={searchWordContactChange}></input>
+								<input className="searchContact" type="text" placeholder="問合せ番号または件名（部分一致）" value={searchWordContact} onChange={searchWordContactChange}></input>
 								<input className="searchClient" type="text" placeholder="顧客名（部分一致）" value={searchWordClient} onChange={searchWordClientChange}></input>
 								<button className="searchButton" onClick={handleSearchButtonClick}>検索</button>
 							</div>
@@ -205,9 +205,9 @@ const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 }
 
 // [メモ]asyncで、Promiseオブジェクトを返す関数にする
-export const getServerSideProps: GetServerSideProps<ContractProps> = async () => {
+export const getServerSideProps: GetServerSideProps<ContactProps> = async () => {
 
-	let contactInfoList: ContractInfo[] = [];
+	let contactInfoList: ContactInfo[] = [];
 	try {
 		// [メモ]awaitで、Promiseがresolveするのを待つ
 		const res = await fetch(`${process.env.BASE_URL}/api/contactList`);
@@ -219,7 +219,7 @@ export const getServerSideProps: GetServerSideProps<ContractProps> = async () =>
 	// [メモ]awaitにより、必ずデータ取得後に実行される
 	return {
 		props: {
-			initialContractInfoList: contactInfoList
+			initialContactInfoList: contactInfoList
 		}
 	};
 }

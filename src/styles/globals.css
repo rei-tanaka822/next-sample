@@ -120,7 +120,7 @@ td {
   gap: 15px;
 }
 
-.searchContract {
+.searchContact {
   width: 240px;
   height: 38px;
 }
@@ -135,10 +135,6 @@ td {
   height: 38px;
 }
 
-/* .searchContract,
-.searchClient {
-  display: inline-block;
-} */
 
 form label {
   margin-bottom: 5px;
