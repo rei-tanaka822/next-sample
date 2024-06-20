@@ -26,11 +26,9 @@ export const BaseSelect = (props: Props) => {
     return (
         <select className={className} onChange={handleFunc}>
             <option value=""></option>
-            {optionList.map((option, index) => {
-                return (
-                    <option key={index} value={option.id}>{option.value}</option>
-                )
-            })}
+            {optionList.map((option, index) => (
+                <option key={index} value={option.id}>{option.value}</option>
+            ))}
         </select>
     );
 }

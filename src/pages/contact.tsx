@@ -166,8 +166,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 										<th>ステータス</th>
 										<th className="personInCharge">担当者</th>
 									</tr>
-									{contactDetailList.map((contactDetail, index) => {
-										return (
+									{contactDetailList.map((contactDetail, index) => (
 										<tr key={index}>
 											<td>{contactDetail.number}</td>
 											<td>{contactDetail.subject}</td>
@@ -175,8 +174,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 											<td>{contactDetail.status}</td>
 											<td>{contactDetail.person_in_charge}</td>
 										</tr>
-										)
-									})}
+									))}
 								</thead>
 							</table>
 						</div>
