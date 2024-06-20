@@ -36,11 +36,11 @@ type ContractProps = {
 /**
  * 検索条件の型
  *
- * @property {string} contract 問合せ番号 or 件名
+ * @property {string} contact 問合せ番号 or 件名
  * @property {string} client 顧客名
  */
 type SearchWords = {
-	contract: string;
+	contact: string;
 	client: string;
 }
 
@@ -81,11 +81,11 @@ const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 
 	// 検索ボタン押下時の処理
 	const handleSearchButtonClick = () => {
-		search({ contract: searchWordContact, client: searchWordClient});
+		search({ contact: searchWordContact, client: searchWordClient});
 	}
 
 	// 検索結果状態管理用フック
-	const [contractInfoList, setContractInfoList] = useState<ContractInfo[]>(props.initialContractInfoList);
+	const [contactInfoList, setContractInfoList] = useState<ContractInfo[]>(props.initialContractInfoList);
 	// 初期表示時の設定処理
 	useEffect(() => {
 		setContractInfoList(props.initialContractInfoList);
@@ -183,14 +183,14 @@ const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 										<th>ステータス</th>
 										<th className="personInCharge">担当者</th>
 									</tr>
-									{contractInfoList.map((contractInfo, index) => {
+									{contactInfoList.map((contactInfo, index) => {
 										return (
 										<tr key={index}>
-											<td>{contractInfo.number}</td>
-											<td>{contractInfo.subject}</td>
-											<td>{contractInfo.client_name}</td>
-											<td>{contractInfo.status}</td>
-											<td>{contractInfo.person_in_charge}</td>
+											<td>{contactInfo.number}</td>
+											<td>{contactInfo.subject}</td>
+											<td>{contactInfo.client_name}</td>
+											<td>{contactInfo.status}</td>
+											<td>{contactInfo.person_in_charge}</td>
 										</tr>
 										)
 									})}
@@ -207,11 +207,11 @@ const ContactPage: NextPage<ContractProps> = (props: ContractProps) => {
 // [メモ]asyncで、Promiseオブジェクトを返す関数にする
 export const getServerSideProps: GetServerSideProps<ContractProps> = async () => {
 
-	let contractInfoList: ContractInfo[] = [];
+	let contactInfoList: ContractInfo[] = [];
 	try {
 		// [メモ]awaitで、Promiseがresolveするのを待つ
-		const res = await fetch(`${process.env.BASE_URL}/api/contractList`);
-		contractInfoList = await res.json();
+		const res = await fetch(`${process.env.BASE_URL}/api/contactList`);
+		contactInfoList = await res.json();
 	} catch (error) {
 		console.error('Failed to fetch data', error);
 	}
@@ -219,7 +219,7 @@ export const getServerSideProps: GetServerSideProps<ContractProps> = async () =>
 	// [メモ]awaitにより、必ずデータ取得後に実行される
 	return {
 		props: {
-			initialContractInfoList: contractInfoList
+			initialContractInfoList: contactInfoList
 		}
 	};
 }

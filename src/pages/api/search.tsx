@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { query } from '../../lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { contract, client } = req.query;
+    const { contact, client } = req.query;
 
     try {
         let sql =
@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             +'   client_name,'
             +'   status_name AS status,'
             +'   user_name AS person_in_charge'
-            +' FROM contract c'
+            +' FROM contact c'
             +' LEFT JOIN status_mst sm'
             +'   ON c.status = sm.id'
             +' LEFT JOIN user_mst um'
@@ -22,8 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
        const params: string[] = [];
 
         // 問合せ番号 or 件名指定時
-        if (contract && contract !== '') {
-            params.push(`%${contract}%`);
+        if (contact && contact !== '') {
+            params.push(`%${contact}%`);
             sql += ` AND (number LIKE $${params.length} OR subject LIKE $${params.length})`;
         }
         // 顧客名指定時
