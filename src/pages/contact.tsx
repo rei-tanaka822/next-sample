@@ -28,7 +28,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
     // 検索ワード
     const searchWordContact = useInputText("");
     const searchWordClient = useInputText("");
-    // フィルター条件
+    // 絞り込み条件
     const checkedStatuses = useInputChecks([]);
     const selectedGroup = useInputSelect("");
     const selectedPersonInCharge = useInputSelect("");
