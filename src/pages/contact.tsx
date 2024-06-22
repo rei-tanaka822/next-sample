@@ -238,22 +238,21 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 
 // [メモ]asyncで、Promiseオブジェクトを返す関数にする
 export const getServerSideProps: GetServerSideProps<ContactProps> = async () => {
+    let contactDetailList: ContactDetail[] = [];
+    try {
+        // [メモ]awaitで、Promiseがresolveするのを待つ
+        const res = await fetch(`${process.env.BASE_URL}/api/contactList`);
+        contactDetailList = await res.json();
+    } catch (error) {
+        console.error('Failed to fetch data', error);
+    }
 
-let contactDetailList: ContactDetail[] = [];
-try {
-    // [メモ]awaitで、Promiseがresolveするのを待つ
-    const res = await fetch(`${process.env.BASE_URL}/api/contactList`);
-    contactDetailList = await res.json();
-} catch (error) {
-    console.error('Failed to fetch data', error);
-}
-
-// [メモ]awaitにより、必ずデータ取得後に実行される
-return {
-    props: {
-        initialContactDetailList: contactDetailList,
-    },
-};
+    // [メモ]awaitにより、必ずデータ取得後に実行される
+    return {
+        props: {
+            initialContactDetailList: contactDetailList,
+        },
+    };
 }
 
 export default ContactPage;
