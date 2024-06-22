@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { BaseCheckBoxList } from './BaseCheckBoxList';
 import { Option } from '@/types/option';
+import { useFetchOption } from "@/hooks/useFetchOption";
 
 /**
  * Propsの型
@@ -21,27 +22,8 @@ type Props = {
  */
 export const StatusCheckList = (props: Props) => {
     const { handleFunc } = props;
-    //ステータス一覧管理用
-    const [statusMst, setStatusMst] = useState<Option[]>([]);
+    // ステータス一覧
+    const statusMst = useFetchOption("api/selectStatusMst");
 
-    // ステータス一覧をマスタから取得
-    const selectStatusMst = async () => {
-        const res = await fetch('api/selectStatusMst');
-        const data = await res.json();
-        // 取得結果を更新
-        setStatusMst(data);
-    };
-
-    useEffect(() => {
-        selectStatusMst();
-    }, []);
-
-    return (
-        <BaseCheckBoxList
-            className="status"
-            itemName="ステータス"
-            optionList={statusMst}
-            handleFunc={handleFunc}
-        />
-    );
+    return <BaseCheckBoxList className="status" itemName="ステータス" optionList={statusMst} handleFunc={handleFunc} />;
 };

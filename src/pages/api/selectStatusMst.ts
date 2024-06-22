@@ -4,7 +4,8 @@ import { query } from '../../lib/db';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         let sql =
-             ' SELECT'
+            // prettier-ignore
+            ' SELECT'
             +'   id,'
             +'   status_name AS value'
             +' FROM status_mst';

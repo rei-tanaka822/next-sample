@@ -5,6 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { contact, client } = req.query;
 
     try {
+        // prettier-ignore
         let sql =
              ' SELECT'
             +'   number,'
@@ -19,22 +20,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             +'   ON c.person_in_charge = um.id'
             +' WHERE 1=1';
 
-       const params: string[] = [];
+        const params: string[] = [];
 
         // 問合せ番号 or 件名指定時
-        if (contact && contact !== '') {
+        if (contact && contact !== "") {
             params.push(`%${contact}%`);
             sql += ` AND (number LIKE $${params.length} OR subject LIKE $${params.length})`;
         }
         // 顧客名指定時
-        if (client && client !== '') {
+        if (client && client !== "") {
             params.push(`%${client}%`);
             sql += ` AND client_name LIKE $${params.length}`;
         }
 
         const result = await query(sql, params);
         res.status(200).json(result.rows);
-
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
