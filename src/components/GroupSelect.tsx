@@ -11,8 +11,10 @@ import { useFetchOption } from "@/hooks/useFetchOption";
  */
 export const GroupSelect = (props: OptionProps) => {
     const { itemName, handleFunc } = props;
+    let groupMst: Option[] = [];
+
     // 種別一覧
-    const groupMst: Option[] = useFetchOption("api/selectGroupMst");
+    groupMst = useFetchOption("api/selectGroupMst");
 
     return (
         <div>

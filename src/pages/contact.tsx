@@ -8,6 +8,9 @@ import { ContactDetail } from "@/types/contact";
 import { useInputText, useInputSelect, useInputChecks } from "@/hooks/useInput";
 import { useContactList } from "@/hooks/useContactList";
 import { fetchContactList } from "@/services/fetchContactList";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "@/components/ErrorFallback";
+import { Error } from "@/components/Error";
 
 /**
  * Propsの型
@@ -16,6 +19,7 @@ import { fetchContactList } from "@/services/fetchContactList";
  */
 type ContactProps = {
     initialContactDetailList: ContactDetail[];
+    errorMsg?: string;
 };
 
 /**
@@ -25,6 +29,9 @@ type ContactProps = {
  * @returns {JSX.Element}
  */
 const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
+    if (props.errorMsg) {
+        return <Error errorMsg={props.errorMsg} />;
+    }
     // 検索ワード
     const searchWordContact = useInputText("");
     const searchWordClient = useInputText("");
@@ -53,57 +60,59 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
     };
 
     return (
-        <div>
-            <Header />
-            <title>問合せ一覧</title>
-            <main>
-                <div className="contents">
-                    <div className="sidebar">
-                        <button>+ 新規問合せ</button>
-                        <div className="filterBox">
-                            <StatusCheckList handleFunc={checkedStatuses.onChange} />
-                            <GroupSelect itemName="問合せ種別" handleFunc={selectedGroup.onChange} />
-                            <UserSelect itemName="担当者" handleFunc={selectedPersonInCharge.onChange} />
-                            <button onClick={handleFilterButtonClick}>絞り込み</button>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="flex justify-between">
-                            <h1>問合せ一覧</h1>
-                            <div className="searchBox">
-                                <input className="searchContact" type="text" placeholder="問合せ番号または件名（部分一致）" value={searchWordContact.value} onChange={searchWordContact.onChange}></input>
-                                <input className="searchClient" type="text" placeholder="顧客名（部分一致）" value={searchWordClient.value} onChange={searchWordClient.onChange}></input>
-                                <button className="searchButton" onClick={handleSearchButtonClick}>
-                                    検索
-                                </button>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <div>
+                <Header />
+                <title>問合せ一覧</title>
+                <main>
+                    <div className="contents">
+                        <div className="sidebar">
+                            <button>+ 新規問合せ</button>
+                            <div className="filterBox">
+                                <StatusCheckList handleFunc={checkedStatuses.onChange} />
+                                <GroupSelect itemName="問合せ種別" handleFunc={selectedGroup.onChange} />
+                                <UserSelect itemName="担当者" handleFunc={selectedPersonInCharge.onChange} />
+                                <button onClick={handleFilterButtonClick}>絞り込み</button>
                             </div>
                         </div>
-                        <div className="searchList">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>問合せ番号</th>
-                                        <th className="subject">件名</th>
-                                        <th className="clientName">顧客名</th>
-                                        <th>ステータス</th>
-                                        <th className="personInCharge">担当者</th>
-                                    </tr>
-                                    {contactDetailList.map((contactDetail, index) => (
-                                        <tr key={index}>
-                                            <td>{contactDetail.number}</td>
-                                            <td>{contactDetail.subject}</td>
-                                            <td>{contactDetail.client_name}</td>
-                                            <td>{contactDetail.status}</td>
-                                            <td>{contactDetail.person_in_charge}</td>
+                        <div>
+                            <div className="flex justify-between">
+                                <h1>問合せ一覧</h1>
+                                <div className="searchBox">
+                                    <input className="searchContact" type="text" placeholder="問合せ番号または件名（部分一致）" value={searchWordContact.value} onChange={searchWordContact.onChange}></input>
+                                    <input className="searchClient" type="text" placeholder="顧客名（部分一致）" value={searchWordClient.value} onChange={searchWordClient.onChange}></input>
+                                    <button className="searchButton" onClick={handleSearchButtonClick}>
+                                        検索
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="searchList">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>問合せ番号</th>
+                                            <th className="subject">件名</th>
+                                            <th className="clientName">顧客名</th>
+                                            <th>ステータス</th>
+                                            <th className="personInCharge">担当者</th>
                                         </tr>
-                                    ))}
-                                </thead>
-                            </table>
+                                        {contactDetailList.map((contactDetail, index) => (
+                                            <tr key={index}>
+                                                <td>{contactDetail.number}</td>
+                                                <td>{contactDetail.subject}</td>
+                                                <td>{contactDetail.client_name}</td>
+                                                <td>{contactDetail.status}</td>
+                                                <td>{contactDetail.person_in_charge}</td>
+                                            </tr>
+                                        ))}
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </main>
-        </div>
+                </main>
+            </div>
+        </ErrorBoundary>
     );
 };
 
@@ -112,8 +121,13 @@ export const getServerSideProps: GetServerSideProps<ContactProps> = async () => 
     let contactDetailList: ContactDetail[] = [];
     try {
         contactDetailList = await fetchContactList(`${process.env.BASE_URL}/api/contactList`);
-    } catch (error) {
-        console.error("Failed to fetch data", error);
+    } catch (error: any) {
+        return {
+            props: {
+                initialContactDetailList: [],
+                errorMsg: error.message,
+            },
+        };
     }
 
     return {
@@ -124,4 +138,3 @@ export const getServerSideProps: GetServerSideProps<ContactProps> = async () => 
 };
 
 export default ContactPage;
-
