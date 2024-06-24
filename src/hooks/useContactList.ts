@@ -66,7 +66,6 @@ export function useContactList(initialValue: ContactDetail[]) {
                         // 星の色の切り替え
                         contactDetail.is_favorite = !contactDetail.is_favorite;
                         // DB登録
-                        // [TODO]トランザクション管理の方法
                         try {
                             const params = new URLSearchParams(targetNumber);
                             let res = new Response();

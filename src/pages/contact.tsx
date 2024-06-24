@@ -11,7 +11,6 @@ import { fetchContactList } from "@/services/fetchContactList";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
 import { Error } from "@/components/Error";
-import { useState } from "react";
 
 /**
  * Propsの型
@@ -30,6 +29,7 @@ type ContactProps = {
  * @returns {JSX.Element}
  */
 const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
+    // 初期表示時（サーバーサイドの処理）で起きたエラーはErrorBoundaryで拾えないので、別途エラー処理を記載
     if (props.errorMsg) {
         return <Error errorMsg={props.errorMsg} />;
     }

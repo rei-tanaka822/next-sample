@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // 問合せ番号 or 件名指定時
         if (contact && contact !== "") {
             params.push(`%${contact}%`);
-            sql += ` AND (number LIKE $${params.length} OR subject LIKE $${params.length})`;
+            sql += ` AND (c.number LIKE $${params.length} OR subject LIKE $${params.length})`;
         }
         // 顧客名指定時
         if (client && client !== "") {

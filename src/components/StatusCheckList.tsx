@@ -1,7 +1,5 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { BaseCheckBoxList } from './BaseCheckBoxList';
-import { Option } from '@/types/option';
+import React from "react";
+import { BaseCheckBoxList } from "./BaseCheckBoxList";
 import { useFetchOption } from "@/hooks/useFetchOption";
 
 /**
