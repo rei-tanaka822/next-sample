@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ContactDetail, SearchWords, FilterItems } from "@/types/contact";
-import { ERROR_FETCH_CONTACT_LIST } from "@/message";
+import { ContactDetail, SearchWords, FilterItems, Favorite } from "@/types/contact";
+import { ERROR_FETCH_CONTACT_LIST, ERROR_HANDLE_FAVORITE } from "@/message";
 
 /**
  * 問合せ一覧管理フック
@@ -56,5 +56,41 @@ export function useContactList(initialValue: ContactDetail[]) {
         }
     };
 
-    return { contactDetailList, search, filter };
+    // お気に入り登録/解除
+    const favorite = async (targetNumber: Favorite) => {
+        setContactDetailList(
+            // [メモ]同期処理の中でawaitは使えないため、Promise.allによって全ての非同期処理の完了まで待機
+            await Promise.all(
+                contactDetailList.map(async (contactDetail) => {
+                    if (contactDetail.number === targetNumber.number) {
+                        // 星の色の切り替え
+                        contactDetail.is_favorite = !contactDetail.is_favorite;
+                        // DB登録
+                        // [TODO]トランザクション管理の方法
+                        try {
+                            const params = new URLSearchParams(targetNumber);
+                            let res = new Response();
+                            if (contactDetail.is_favorite === true) {
+                                res = await fetch(`api/addFavorite?${params}`);
+                            } else {
+                                res = await fetch(`api/cancelFavorite?${params}`);
+                            }
+                            if (!res.ok) {
+                                setState(() => {
+                                    throw new Error(ERROR_HANDLE_FAVORITE);
+                                });
+                            }
+                        } catch (error) {
+                            setState(() => {
+                                throw error;
+                            });
+                        }
+                    }
+                    return contactDetail;
+                })
+            )
+        );
+    };
+
+    return { contactDetailList, search, filter, favorite };
 }

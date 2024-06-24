@@ -10,11 +10,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // prettier-ignore
         let sql =
              ' SELECT'
-            +'   number,'
+            +'   c.number,'
             +'   subject,'
             +'   client_name,'
             +'   status_name AS status,'
-            +'   user_name AS person_in_charge'
+            +'   user_name AS person_in_charge,'
+            +' CASE'
+            +'   WHEN cf.number IS NULL THEN false'
+            +'   ELSE true'
+            +' END AS is_favorite'
             +' FROM contact c'
             +' LEFT JOIN status_mst sm'
             +'   ON c.status = sm.id'
@@ -22,6 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             +'   ON c.group_id = gm.id'
             +' LEFT JOIN user_mst um'
             +'   ON c.person_in_charge = um.id'
+            +' LEFT JOIN contact_favorite cf'
+            +'   ON c.number = cf.number'
             +' WHERE 1=1';
 
         const params: any[] = [];
@@ -42,6 +48,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             params.push(personInCharge);
             sql += ` AND person_in_charge = $${params.length}`;
         }
+
+        // ソート処理
+        sql += ' ORDER BY cf.number, c.number';
 
         // 絞り込み条件をもとに、データ取得
         const result = await query(sql, params);

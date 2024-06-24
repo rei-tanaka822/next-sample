@@ -13,6 +13,7 @@ export type ContactDetail = {
     client_name: string;
     status: string;
     person_in_charge: string;
+    is_favorite: boolean;
 };
 
 /**
@@ -37,4 +38,13 @@ export type FilterItems = {
     statuses: string[];
     group: string;
     personInCharge: string;
+};
+
+/**
+ * お気に入りの型
+ *
+ * @property {string} number 問合せ番号
+ */
+export type Favorite = {
+    number: string;
 };

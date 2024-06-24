@@ -11,6 +11,7 @@ import { fetchContactList } from "@/services/fetchContactList";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
 import { Error } from "@/components/Error";
+import { useState } from "react";
 
 /**
  * Propsの型
@@ -40,7 +41,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
     const selectedGroup = useInputSelect("");
     const selectedPersonInCharge = useInputSelect("");
     // 検索結果
-    const { contactDetailList, search, filter } = useContactList(props.initialContactDetailList);
+    const { contactDetailList, search, filter, favorite } = useContactList(props.initialContactDetailList);
 
     // 検索ボタン押下時の処理
     const handleSearchButtonClick = () => {
@@ -57,6 +58,12 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
             group: selectedGroup.value,
             personInCharge: selectedPersonInCharge.value,
         });
+    };
+
+    // 星マーク押下時の処理
+    const handleFavoriteStarClick = (targetNumber: string) => {
+        // お気に入り登録
+        favorite({ number: targetNumber });
     };
 
     return (
@@ -90,6 +97,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
                                 <table>
                                     <thead>
                                         <tr>
+                                            <th className="favorite"></th>
                                             <th>問合せ番号</th>
                                             <th className="subject">件名</th>
                                             <th className="clientName">顧客名</th>
@@ -98,6 +106,16 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
                                         </tr>
                                         {contactDetailList.map((contactDetail, index) => (
                                             <tr key={index}>
+                                                <td className="favorite">
+                                                    <p
+                                                        className={contactDetail.is_favorite ? "isFavorite" : "inFavorite"}
+                                                        onClick={() => {
+                                                            handleFavoriteStarClick(contactDetail.number);
+                                                        }}
+                                                    >
+                                                        ★
+                                                    </p>
+                                                </td>
                                                 <td>{contactDetail.number}</td>
                                                 <td>{contactDetail.subject}</td>
                                                 <td>{contactDetail.client_name}</td>

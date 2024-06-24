@@ -165,3 +165,21 @@ button:hover {
 .searchButton {
   margin-right: 20px;
 }
+
+.favorite {
+  width: 50px;
+}
+
+.favorite :hover {
+  cursor: pointer;
+}
+
+.isFavorite {
+  color: #ffb906;
+  width: 60px;
+}
+
+.inFavorite {
+  color: #c4c4c4;
+  width: 60px;
+}

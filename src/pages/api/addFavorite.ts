@@ -1,0 +1,22 @@
+import { NextApiRequest, NextApiResponse } from "next";
+import { query } from "../../lib/db";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const { number } = req.query;
+
+    try {
+        // prettier-ignore
+        const sql =
+             ' INSERT INTO contact_favorite'
+            +' VALUES ('
+            +'   $1, $2, now()'
+            +' )';
+
+        // [メモ]現時点では、$2はユーザー1固定。（ログイン機能未実装のため）
+        const result = await query(sql, [number, "1"]);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
