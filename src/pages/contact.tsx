@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from "react";
 import { GroupSelect } from "@/components/GroupSelect";
 import { UserSelect } from "@/components/UserSelect";
 import { StatusCheckList } from "@/components/StatusCheckList";
@@ -6,7 +7,9 @@ import { Header } from "@/components/Header";
 import { GetServerSideProps, NextPage } from "next";
 import { ContactDetail } from "@/types/contact";
 import { useInputText, useInputSelect, useInputChecks } from "@/hooks/useInput";
-import { useContactList } from "@/hooks/useContactList";
+import { useSearch } from "@/hooks/useSearch";
+import { useFilter } from "@/hooks/useFilter";
+import { useFavorite } from "@/hooks/useFavorite";
 import { fetchContactList } from "@/services/fetchContactList";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
@@ -40,30 +43,37 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
     const checkedStatuses = useInputChecks([]);
     const selectedGroup = useInputSelect("");
     const selectedPersonInCharge = useInputSelect("");
-    // 検索結果
-    const { contactDetailList, search, filter, favorite } = useContactList(props.initialContactDetailList);
+    // 問合せ一覧
+    const [contactDetailList, setContactDetailList] = useState<ContactDetail[]>(props.initialContactDetailList);
 
-    // 検索ボタン押下時の処理
-    const handleSearchButtonClick = () => {
-        search({
-            contact: searchWordContact.value,
-            client: searchWordClient.value,
-        });
+    // [メモ]初期表示時にも検索処理が実行されないようuseSearch内に検索用の関数を別途定義
+    // 検索処理
+    const search = useSearch();
+    // 絞り込み処理
+    const filter = useFilter();
+    // お気に入り処理
+    const favorite = useFavorite();
+
+    // 検索ボタン押下
+    const handleSearchButtonClick = async () => {
+        const result: ContactDetail[] = await search({ contact: searchWordContact.value, client: searchWordClient.value });
+        setContactDetailList(result);
     };
 
-    // 絞り込みボタン押下時の処理
-    const handleFilterButtonClick = () => {
-        filter({
+    // 絞り込みボタン押下
+    const handleFilterButtonClick = async () => {
+        const result: ContactDetail[] = await filter({
             statuses: checkedStatuses.values,
             group: selectedGroup.value,
             personInCharge: selectedPersonInCharge.value,
         });
+        setContactDetailList(result);
     };
 
     // 星マーク押下時の処理
-    const handleFavoriteStarClick = (targetNumber: string) => {
-        // お気に入り登録
-        favorite({ number: targetNumber });
+    const handleFavoriteStarClick = async (targetNumber: string) => {
+        const result: ContactDetail[] = await favorite({ contactDetailList: contactDetailList, targetNumber: targetNumber });
+        setContactDetailList(result);
     };
 
     return (

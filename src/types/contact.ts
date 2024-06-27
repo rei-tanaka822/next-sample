@@ -46,5 +46,6 @@ export type FilterItems = {
  * @property {string} number 問合せ番号
  */
 export type Favorite = {
-    number: string;
+    contactDetailList: ContactDetail[];
+    targetNumber: string;
 };

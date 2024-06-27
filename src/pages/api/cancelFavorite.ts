@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { query } from "../../lib/db";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { number } = req.query;
+    const { targetNumber } = req.query;
 
     try {
         // prettier-ignore
@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             +' AND user_id = $2';
 
         // [メモ]現時点では、$2はユーザー1固定。（ログイン機能未実装のため）
-        const result = await query(sql, [number, "1"]);
+        const result = await query(sql, [targetNumber, "1"]);
         res.status(200).json(result.rows);
     } catch (error) {
         console.error(error);
