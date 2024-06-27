@@ -118,7 +118,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
                                             <tr key={index}>
                                                 <td className="favorite">
                                                     <p
-                                                        className={contactDetail.is_favorite ? "isFavorite" : "inFavorite"}
+                                                        className={contactDetail.is_favorite ? "isFavorite" : "isUnFavorite"}
                                                         onClick={() => {
                                                             handleFavoriteStarClick(contactDetail.number);
                                                         }}

@@ -179,7 +179,7 @@ button:hover {
   width: 60px;
 }
 
-.inFavorite {
+.isUnFavorite {
   color: #c4c4c4;
   width: 60px;
 }
