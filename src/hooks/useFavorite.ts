@@ -20,12 +20,12 @@ export function useFavorite() {
             contactDetailList.map(async (contactDetail) => {
                 if (contactDetail.number === targetNumber) {
                     // 星の色の切り替え
-                    contactDetail.is_favorite = !contactDetail.is_favorite;
+                    contactDetail.isFavorite = !contactDetail.isFavorite;
                     // DB登録
                     try {
                         const params = new URLSearchParams({ targetNumber: targetNumber });
                         let res = new Response();
-                        if (contactDetail.is_favorite === true) {
+                        if (contactDetail.isFavorite === true) {
                             // お気に入り登録API呼び出し
                             res = await fetch(`api/addFavorite?${params}`);
                         } else {

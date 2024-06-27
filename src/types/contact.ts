@@ -10,10 +10,10 @@
 export type ContactDetail = {
     number: string;
     subject: string;
-    client_name: string;
+    clientName: string;
     status: string;
-    person_in_charge: string;
-    is_favorite: boolean;
+    personInCharge: string;
+    isFavorite: boolean;
 };
 
 /**

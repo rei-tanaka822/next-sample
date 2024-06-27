@@ -24,3 +24,22 @@ export async function fetchContactList(url: string, params: URLSearchParams = ne
         throw error;
     }
 }
+
+/**
+ * APIから取得した問合せデータのプロパティ名を型に合わせて変更する
+ *
+ * @param originalResult 変換前のデータを加工する
+ * @return {ContactDetail[]} 変換後のデータ
+ */
+export function convertOriginalData(originalResult: any[]): ContactDetail[] {
+    const convertedList = originalResult.map((row: any) => ({
+        number: row["number"],
+        subject: row["subject"],
+        clientName: row["client_name"],
+        status: row["status_name"],
+        personInCharge: row["user_name"],
+        isFavorite: row["is_favorite"],
+    }));
+
+    return convertedList;
+}

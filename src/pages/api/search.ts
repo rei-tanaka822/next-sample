@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { query } from '../../lib/db';
+import { convertOriginalData } from '@/services/contactList';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { contact, client } = req.query;
@@ -11,8 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             +'   c.number,'
             +'   subject,'
             +'   client_name,'
-            +'   status_name AS status,'
-            +'   user_name AS person_in_charge,'
+            +'   status_name,'
+            +'   user_name,'
             +' CASE'
             +'   WHEN cf.number IS NULL THEN false'
             +'   ELSE true'
@@ -40,10 +41,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // ソート処理
-        sql += ' ORDER BY cf.number, c.number';
+        sql += " ORDER BY cf.number, c.number";
 
         const result = await query(sql, params);
-        res.status(200).json(result.rows);
+
+        // 受け取る型に合わせてプロパティ名を変更したデータを設定
+        res.status(200).json(convertOriginalData(result.rows));
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

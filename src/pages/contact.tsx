@@ -10,7 +10,7 @@ import { useInputText, useInputSelect, useInputChecks } from "@/hooks/useInput";
 import { useSearch } from "@/hooks/useSearch";
 import { useFilter } from "@/hooks/useFilter";
 import { useFavorite } from "@/hooks/useFavorite";
-import { fetchContactList } from "@/services/fetchContactList";
+import { fetchContactList } from "@/services/contactList";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
 import { Error } from "@/components/Error";
@@ -118,7 +118,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
                                             <tr key={index}>
                                                 <td className="favorite">
                                                     <p
-                                                        className={contactDetail.is_favorite ? "isFavorite" : "isUnFavorite"}
+                                                        className={contactDetail.isFavorite ? "isFavorite" : "isUnFavorite"}
                                                         onClick={() => {
                                                             handleFavoriteStarClick(contactDetail.number);
                                                         }}
@@ -128,9 +128,9 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
                                                 </td>
                                                 <td>{contactDetail.number}</td>
                                                 <td>{contactDetail.subject}</td>
-                                                <td>{contactDetail.client_name}</td>
+                                                <td>{contactDetail.clientName}</td>
                                                 <td>{contactDetail.status}</td>
-                                                <td>{contactDetail.person_in_charge}</td>
+                                                <td>{contactDetail.personInCharge}</td>
                                             </tr>
                                         ))}
                                     </thead>
