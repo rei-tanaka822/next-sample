@@ -1,7 +1,18 @@
 import React from "react";
 import { BaseSelect } from "./BaseSelect";
-import { Option, OptionProps } from "@/types/option";
+import { Option } from "@/types/option";
 import { useFetchOption } from "@/hooks/useFetchOption";
+
+/**
+ * Propsの型（選択項目用）
+ *
+ * @property {string} itemName 項目名
+ * @property {{(e: React.ChangeEvent<HTMLSelectElement>) => void}} handleFunc ハンドラメソッド
+ */
+export type OptionProps = {
+    itemName: string;
+    handleFunc: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+};
 
 /**
  * ユーザーセレクトボックス表示用コンポーネント
