@@ -1,6 +1,6 @@
 import React from "react";
-import { BaseCheckBoxList } from "./BaseCheckBoxList";
-import { useFetchOption } from "@/hooks/useFetchOption";
+import { BaseCheckBoxList } from "../elements/BaseCheckBoxList";
+import { useFetchOption } from "@/hooks/elements/useFetchOption";
 
 /**
  * Propsの型
@@ -21,7 +21,7 @@ type Props = {
 export const StatusCheckList = (props: Props) => {
     const { handleFunc } = props;
     // ステータス一覧
-    const statusMst = useFetchOption("api/selectStatusMst");
+    const statusMst = useFetchOption("api/master/selectStatusMst");
 
     return <BaseCheckBoxList className="status" itemName="ステータス" optionList={statusMst} handleFunc={handleFunc} />;
 };

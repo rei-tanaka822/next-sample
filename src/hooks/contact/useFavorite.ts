@@ -29,10 +29,10 @@ export function useFavorite() {
                 let res = new Response();
                 if (targetContactDetail.isFavorite === true) {
                     // お気に入り登録API呼び出し
-                    res = await fetch(`api/addFavorite?${params}`);
+                    res = await fetch(`api/contact/addFavorite?${params}`);
                 } else {
                     // お気に入り解除API呼び出し
-                    res = await fetch(`api/cancelFavorite?${params}`);
+                    res = await fetch(`api/contact/cancelFavorite?${params}`);
                 }
                 if (!res.ok) {
                     setState(() => {

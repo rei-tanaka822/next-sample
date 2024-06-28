@@ -1,11 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { query } from '../../lib/db';
-import { convertOriginalData } from '@/services/contactList';
+import { NextApiRequest, NextApiResponse } from "next";
+import { query } from "../../../lib/db";
+import { convertOriginalData } from "@/services/contact/contactList";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    // prettier-ignore
-    const sql =
+    try {
+        // prettier-ignore
+        const sql =
           ' SELECT'
         +'   c.number,'
         +'   subject,'
@@ -25,12 +25,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         +'   ON c.number = cf.number'
         +' ORDER BY cf.number, c.number';
 
-    const result = await query(sql);
+        const result = await query(sql);
 
-    // 受け取る型に合わせてプロパティ名を変更したデータを設定
-    res.status(200).json(convertOriginalData(result.rows));
-  } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-  }
+        // 受け取る型に合わせてプロパティ名を変更したデータを設定
+        res.status(200).json(convertOriginalData(result.rows));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 }

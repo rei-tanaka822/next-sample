@@ -14,7 +14,7 @@ export function useSearch() {
         try {
             const params = new URLSearchParams(searchWords);
             // 検索API呼び出し
-            const res = await fetch(`api/search?${params}`);
+            const res = await fetch(`api/contact/search?${params}`);
             if (!res.ok) {
                 setState(() => {
                     throw new Error(ERROR_FETCH_CONTACT_LIST);

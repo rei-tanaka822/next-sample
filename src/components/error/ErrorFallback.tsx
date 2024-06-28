@@ -1,5 +1,5 @@
 import { FallbackProps } from "react-error-boundary";
-import { Header } from "@/components/Header";
+import { Header } from "@/components/layouts/Header";
 
 function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
     return (

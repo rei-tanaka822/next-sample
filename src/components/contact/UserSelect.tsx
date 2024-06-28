@@ -1,7 +1,7 @@
 import React from "react";
-import { BaseSelect } from "./BaseSelect";
+import { BaseSelect } from "../elements/BaseSelect";
 import { Option } from "@/types/option";
-import { useFetchOption } from "@/hooks/useFetchOption";
+import { useFetchOption } from "@/hooks/elements/useFetchOption";
 
 /**
  * Propsの型（選択項目用）
@@ -15,22 +15,19 @@ export type OptionProps = {
 };
 
 /**
- * 種別セレクトボックス表示用コンポーネント
+ * ユーザーセレクトボックス表示用コンポーネント
  *
  * @param {Props} props セレクトボックスの情報
  * @returns {JSX.Element}
  */
-export const GroupSelect = (props: OptionProps) => {
+export const UserSelect = (props: OptionProps) => {
     const { itemName, handleFunc } = props;
-    let groupMst: Option[] = [];
-
-    // 種別一覧
-    groupMst = useFetchOption("api/selectGroupMst");
+    const userMst: Option[] = useFetchOption("api/master/selectUserMst");
 
     return (
         <div>
             <p>{itemName}</p>
-            <BaseSelect className="filter" optionList={groupMst} handleFunc={handleFunc} />
+            <BaseSelect className="filter" optionList={userMst} handleFunc={handleFunc} />
         </div>
     );
 };

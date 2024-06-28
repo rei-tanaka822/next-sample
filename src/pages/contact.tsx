@@ -1,19 +1,19 @@
 import React from 'react';
 import { useState } from "react";
-import { GroupSelect } from "@/components/GroupSelect";
-import { UserSelect } from "@/components/UserSelect";
-import { StatusCheckList } from "@/components/StatusCheckList";
-import { Header } from "@/components/Header";
+import { GroupSelect } from "@/components/contact/GroupSelect";
+import { UserSelect } from "@/components/contact/UserSelect";
+import { StatusCheckList } from "@/components/contact/StatusCheckList";
+import { Header } from "@/components/layouts/Header";
 import { GetServerSideProps, NextPage } from "next";
 import { ContactDetail } from "@/types/contact";
-import { useInputText, useInputSelect, useInputChecks } from "@/hooks/useInput";
-import { useSearch } from "@/hooks/useSearch";
-import { useFilter } from "@/hooks/useFilter";
-import { useFavorite } from "@/hooks/useFavorite";
-import { fetchContactList } from "@/services/contactList";
+import { useInputText, useInputSelect, useInputChecks } from "@/hooks/elements/useInput";
+import { useSearch } from "@/hooks/contact/useSearch";
+import { useFilter } from "@/hooks/contact/useFilter";
+import { useFavorite } from "@/hooks/contact/useFavorite";
+import { fetchContactList } from "@/services/contact/contactList";
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallback from "@/components/ErrorFallback";
-import { Error } from "@/components/Error";
+import ErrorFallback from "@/components/error/ErrorFallback";
+import { Error } from "@/components/error/Error";
 
 /**
  * Propsの型
@@ -148,7 +148,7 @@ const ContactPage: NextPage<ContactProps> = (props: ContactProps) => {
 export const getServerSideProps: GetServerSideProps<ContactProps> = async () => {
     let contactDetailList: ContactDetail[] = [];
     try {
-        contactDetailList = await fetchContactList(`${process.env.BASE_URL}/api/contactList`);
+        contactDetailList = await fetchContactList(`${process.env.BASE_URL}/api/contact/contactList`);
     } catch (error: any) {
         return {
             props: {

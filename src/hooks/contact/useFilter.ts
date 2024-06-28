@@ -22,7 +22,7 @@ export function useFilter() {
                 params.append("personInCharge", filterItems.personInCharge);
             }
             // 絞り込みAPI呼び出し
-            const res = await fetch(`api/filter?${params}`);
+            const res = await fetch(`api/contact/filter?${params}`);
             if (!res.ok) {
                 setState(() => {
                     throw new Error(ERROR_FETCH_CONTACT_LIST);

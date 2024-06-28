@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { query } from '../../lib/db';
-import { convertOriginalData } from '@/services/contactList';
+import { NextApiRequest, NextApiResponse } from "next";
+import { query } from "../../../lib/db";
+import { convertOriginalData } from "@/services/contact/contactList";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { statuses, group, personInCharge } = req.query;
@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // ソート処理
-        sql += ' ORDER BY cf.number, c.number';
+        sql += " ORDER BY cf.number, c.number";
 
         // 絞り込み条件をもとに、データ取得
         const result = await query(sql, params);
@@ -60,6 +60,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(200).json(convertOriginalData(result.rows));
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: "Internal Server Error" });
     }
 }

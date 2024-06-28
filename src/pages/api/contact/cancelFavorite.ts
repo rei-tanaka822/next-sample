@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { query } from "../../lib/db";
+import { query } from "../../../lib/db";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { targetNumber } = req.query;
@@ -7,10 +7,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         // prettier-ignore
         const sql =
-             ' INSERT INTO contact_favorite'
-            +' VALUES ('
-            +'   $1, $2, now()'
-            +' )';
+             ' DELETE FROM contact_favorite'
+            +' WHERE number = $1'
+            +' AND user_id = $2';
 
         // [メモ]現時点では、$2はユーザー1固定。（ログイン機能未実装のため）
         const result = await query(sql, [targetNumber, "1"]);
