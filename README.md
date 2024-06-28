@@ -25,5 +25,5 @@ Next.js（React）勉強用のサンプル画面です。
 
 * ページネーション（※未実装）
 
-![問合せ一覧_画面イメージ](
-https://github.com/rei-tanaka822/next-sample/assets/149063727/ee1f218a-fa18-4171-aeae-873443f0f286)
+
+![問合せ一覧_画面イメージ](https://github.com/rei-tanaka822/next-sample/assets/149063727/ee1f218a-fa18-4171-aeae-873443f0f286)
