@@ -15,40 +15,44 @@ export function useFavorite() {
     const favorite = async (favorite: Favorite): Promise<ContactDetail[]> => {
         const { contactDetailList, targetNumber } = favorite;
 
-        // [メモ]同期処理の中でawaitは使えないため、Promise.allによって全ての非同期処理の完了まで待機
-        await Promise.all(
-            contactDetailList.map(async (contactDetail) => {
-                if (contactDetail.number === targetNumber) {
-                    // 星の色の切り替え
-                    contactDetail.isFavorite = !contactDetail.isFavorite;
-                    // DB登録
-                    try {
-                        const params = new URLSearchParams({ targetNumber: targetNumber });
-                        let res = new Response();
-                        if (contactDetail.isFavorite === true) {
-                            // お気に入り登録API呼び出し
-                            res = await fetch(`api/addFavorite?${params}`);
-                        } else {
-                            // お気に入り解除API呼び出し
-                            res = await fetch(`api/cancelFavorite?${params}`);
-                        }
-                        if (!res.ok) {
-                            setState(() => {
-                                throw new Error(ERROR_HANDLE_FAVORITE);
-                            });
-                        }
-                    } catch (error) {
-                        setState(() => {
-                            throw error;
-                        });
-                    }
+        // 元配列から、お気に入り操作対象の問い合せを取得
+        const targetContactDetail: ContactDetail | undefined = contactDetailList.filter((contactDetail) => contactDetail.number === targetNumber).shift();
+        // 元配列から、お気に入り操作対象の問い合せのインデックスを取得
+        const index = contactDetailList.findIndex((contactDetail) => contactDetail.number === targetNumber);
+
+        if (targetContactDetail) {
+            // 星の色の切り替え
+            targetContactDetail.isFavorite = !targetContactDetail.isFavorite;
+            // DB登録
+            try {
+                const params = new URLSearchParams({ targetNumber: targetNumber });
+                let res = new Response();
+                if (targetContactDetail.isFavorite === true) {
+                    // お気に入り登録API呼び出し
+                    res = await fetch(`api/addFavorite?${params}`);
+                } else {
+                    // お気に入り解除API呼び出し
+                    res = await fetch(`api/cancelFavorite?${params}`);
                 }
-                return contactDetail;
-            })
-        );
-        // 再レンダリングさせるために、新しい配列を作成
-        const resultContactDetailList: ContactDetail[] = [...contactDetailList];
-        return resultContactDetailList;
+                if (!res.ok) {
+                    setState(() => {
+                        throw new Error(ERROR_HANDLE_FAVORITE);
+                    });
+                }
+            } catch (error) {
+                setState(() => {
+                    throw error;
+                });
+            }
+        } else {
+            throw new Error(ERROR_HANDLE_FAVORITE);
+        }
+
+        // 更新した問い合わせを上書き
+        contactDetailList[index] = targetContactDetail;
+
+        // 再レンダリングさせるために、新しい配列として返却
+        return [...contactDetailList];
     };
 
     return favorite;
