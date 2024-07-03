@@ -35,11 +35,15 @@ export function useFavorite() {
                     res = await fetch(`api/contact/cancelFavorite?${params}`);
                 }
                 if (!res.ok) {
+                    // 変更した星の色を元に戻す
+                    targetContactDetail.isFavorite = !targetContactDetail.isFavorite;
                     setState(() => {
                         throw new Error(ERROR_HANDLE_FAVORITE);
                     });
                 }
             } catch (error) {
+                // 変更した星の色を元に戻す
+                targetContactDetail.isFavorite = !targetContactDetail.isFavorite;
                 setState(() => {
                     throw error;
                 });
